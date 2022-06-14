@@ -33,8 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.findAll();
     }
 
-    @Transactional
-    @Override
+   @Override
     public void save(Employee employee) throws DuplicateDataException, BadRequestException {
 
         String email = employee.getEmail();
