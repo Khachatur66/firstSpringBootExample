@@ -2,8 +2,10 @@ package com.vfa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vfa.enums.UserStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +23,7 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -43,7 +46,7 @@ public class Employee {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<Address> addresses;
-
+    
     public Employee() {
         status = UserStatus.UNVERIFIED;
         created = LocalDate.now();

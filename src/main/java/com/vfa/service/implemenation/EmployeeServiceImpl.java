@@ -1,5 +1,6 @@
 package com.vfa.service.implemenation;
 
+import com.vfa.dto.request.EmployeeRequestDTO;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -55,6 +56,14 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public void update(Employee employee) {
         employeeRepository.save(employee);
+    }
+
+    @Override
+    public void updateDTO(int id, EmployeeRequestDTO requestDTO) throws NotFoundException {
+        Employee employee = this.getById(id);
+        employee.setFirstName(requestDTO.getFirstName());
+        employee.setLastName(requestDTO.getLastName());
+        employee.setEmail(requestDTO.getEmail());
     }
 
     @Override

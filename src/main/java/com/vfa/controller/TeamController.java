@@ -5,6 +5,9 @@ import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Team;
 import com.vfa.service.interfaces.TeamService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +27,12 @@ public class TeamController {
     @GetMapping("/{id}")
     public ResponseEntity<Team> getById(@PathVariable(value = "id") int id) throws NotFoundException {
         return ResponseEntity.ok(teamService.getById(id));
+    }
+
+    @GetMapping("/player/{teamOrigin}")
+    public ResponseEntity<?> getPaginationByTeamId(@PathVariable(value = "teamOrigin") String teamOrigin,
+                                                   @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(teamService.getByTeamId(teamOrigin, pageable));
     }
 
     @GetMapping("/team/{id}")

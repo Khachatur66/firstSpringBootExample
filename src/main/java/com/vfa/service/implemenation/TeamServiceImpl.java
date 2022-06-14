@@ -4,6 +4,8 @@ import com.vfa.exception.NotFoundException;
 import com.vfa.model.Team;
 import com.vfa.repository.TeamRepository;
 import com.vfa.service.interfaces.TeamService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,11 @@ public class TeamServiceImpl implements TeamService {
         return teamRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Could not find team with current id: " + id));
+    }
+
+    @Override
+    public Page<Team> getByTeamId(String teamOrigin, Pageable pageable) {
+        return teamRepository.getByTeamId(teamOrigin, pageable);
     }
 
     @Override

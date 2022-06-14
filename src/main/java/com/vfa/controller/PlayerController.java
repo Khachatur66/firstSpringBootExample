@@ -22,24 +22,6 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> save(@RequestBody Player player) throws DuplicateDataException, BadRequestException {
-        playerService.save(player);
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Player player) {
-        playerService.update(player);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam int id) {
-        playerService.delete(id);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
         return ResponseEntity.ok(playerService.getById(id));
@@ -64,5 +46,23 @@ public class PlayerController {
     @GetMapping
     public ResponseEntity<List<Player>> getAll() {
         return ResponseEntity.ok(playerService.getAll());
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> save(@RequestBody Player player) throws DuplicateDataException, BadRequestException {
+        playerService.save(player);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody Player player) {
+        playerService.update(player);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delete(@RequestParam int id) {
+        playerService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
