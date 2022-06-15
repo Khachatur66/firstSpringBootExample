@@ -8,12 +8,11 @@ import com.vfa.model.Employee;
 import com.vfa.repository.EmployeeRepository;
 import com.vfa.service.interfaces.EmployeeService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
@@ -33,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.findAll();
     }
 
-   @Override
+    @Override
     public void save(Employee employee) throws DuplicateDataException, BadRequestException {
 
         String email = employee.getEmail();
@@ -52,14 +51,21 @@ public class EmployeeServiceImpl implements EmployeeService{
         employeeRepository.saveAndFlush(employee);
     }
 
+   /* @Override
+    public void saveVerificationCode(String verificationCode) {
+        while (employee.getVerificationCode() == null){
+
+        }
+    }*/
+
     @Override
     public void update(Employee employee) {
         employeeRepository.save(employee);
     }
 
     @Override
-    public void updateDTO(int id, EmployeeRequestDTO requestDTO) throws NotFoundException {
-        Employee employee = this.getById(id);
+    public void updateDTO(EmployeeRequestDTO requestDTO) throws NotFoundException {
+        Employee employee = this.getById(requestDTO.getId());
         employee.setFirstName(requestDTO.getFirstName());
         employee.setLastName(requestDTO.getLastName());
         employee.setEmail(requestDTO.getEmail());

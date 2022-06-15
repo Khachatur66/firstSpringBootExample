@@ -56,7 +56,8 @@ public class CoachController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCoachDTO(@PathVariable(value = "id") int id, @RequestBody CoachRequestDTO coachRequestDTO) throws NotFoundException {
+    public ResponseEntity<Void> updateCoachDTO(@PathVariable(value = "id") int id,
+                                               @RequestBody CoachRequestDTO coachRequestDTO) throws NotFoundException {
         coachService.updateDTO(id, coachRequestDTO);
         return ResponseEntity.ok().build();
     }

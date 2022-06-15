@@ -19,4 +19,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("UPDATE Employee e SET e.firstName = ?1, e.lastName = ?2, e.email = ?3 WHERE e.id = ?4")
     void updateEmployeeDTO(String firstName, String lastName, String email, int id);
+
+    void findByVerificationCode(String verificationCode);
 }

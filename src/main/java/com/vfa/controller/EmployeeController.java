@@ -44,10 +44,10 @@ public class EmployeeController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable(value = "id") int id,
-                                       @RequestBody EmployeeRequestDTO employeeRequestDTO) throws NotFoundException {
-        employeeService.updateDTO(id, employeeRequestDTO);
+    @PutMapping("/dto")
+    public ResponseEntity<Void> updateDTO(
+            @RequestBody EmployeeRequestDTO employeeRequestDTO) throws NotFoundException {
+        employeeService.updateDTO(employeeRequestDTO);
         return ResponseEntity.ok().build();
     }
 
