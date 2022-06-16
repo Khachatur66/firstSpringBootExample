@@ -1,7 +1,9 @@
 package com.vfa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vfa.enums.UserStatus;
+import org.hibernate.metamodel.model.convert.internal.OrdinalEnumValueConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -26,8 +28,7 @@ public class Employee {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore
-    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(nullable = false)

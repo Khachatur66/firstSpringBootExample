@@ -6,7 +6,6 @@ import com.vfa.model.Employee;
 
 public interface EmployeeService extends AbstractService<Employee>{
 
-    void updateDTO(EmployeeRequestDTO requestDTO) throws NotFoundException;
+    void updateEmployee(EmployeeRequestDTO requestDTO) throws NotFoundException;
 
-//    void saveVerificationCode(Employee employee);
 }

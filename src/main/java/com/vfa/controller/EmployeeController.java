@@ -7,7 +7,6 @@ import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 import com.vfa.service.interfaces.EmployeeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,11 +42,10 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    @Transactional
     @PutMapping("/dto")
     public ResponseEntity<Void> updateDTO(
             @RequestBody EmployeeRequestDTO employeeRequestDTO) throws NotFoundException {
-        employeeService.updateDTO(employeeRequestDTO);
+        employeeService.updateEmployee(employeeRequestDTO);
         return ResponseEntity.ok().build();
     }
 
