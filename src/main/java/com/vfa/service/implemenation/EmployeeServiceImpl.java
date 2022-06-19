@@ -9,6 +9,8 @@ import com.vfa.model.Employee;
 import com.vfa.repository.EmployeeRepository;
 import com.vfa.service.interfaces.EmployeeService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +31,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getById(int id) throws NotFoundException {
         return employeeRepository
-                .getByEmployeeId(id)
+                .getByEmployeeEmail(id)
                 .orElseThrow(() -> new NotFoundException("could not find employee with current id: " + id));
+    }
+
+    @Override
+    public Page<Employee> getByEmployeeEmail(String password, Pageable pageable) {
+        return employeeRepository.getByEmployeeEmail(password, pageable);
     }
 
     @Override
@@ -55,10 +62,10 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BadRequestException("the Number of " + firstName + " should not exceed 3");
         }
 
-        String verficationCode = this.saveVerificationCode();
-        employee.setVerificationCode(verficationCode);
+        String verificationCode = this.saveVerificationCode();
+        employee.setVerificationCode(verificationCode);
 
-        emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verficationCode);
+        emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode);
 
         employeeRepository.save(employee);
     }

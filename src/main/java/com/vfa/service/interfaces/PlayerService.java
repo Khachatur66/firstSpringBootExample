@@ -15,4 +15,6 @@ public interface PlayerService extends AbstractService<Player> {
     List<Player> getByAge(int from, int to);
 
     PlayerResponseDTO getPlayerInfo(int id) throws NotFoundException;
+
+    void savePlayers(List<Player> playerList);
 }

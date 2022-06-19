@@ -20,7 +20,6 @@ public class Player extends AbstractEntity{
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    @JsonBackReference
     private Team team;
 
     public Player() {

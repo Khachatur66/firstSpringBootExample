@@ -6,6 +6,8 @@ import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 import com.vfa.service.interfaces.EmployeeService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,12 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
         return ResponseEntity.ok(employeeService.getById(id));
+    }
+
+    @GetMapping("/password/{password}")
+    public ResponseEntity<?> getByEmail(@PathVariable(value = "password") String password,
+                                        @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(employeeService.getByEmployeeEmail(password, pageable));
     }
 
     @GetMapping

@@ -61,6 +61,11 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public void savePlayers(List<Player> playerList) {
+        playerRepository.saveAll(playerList);
+    }
+
+    @Override
     public void update(Player player) {
         playerRepository.save(player);
     }

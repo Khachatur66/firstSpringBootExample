@@ -1,5 +1,6 @@
 package com.vfa.controller;
 
+import com.vfa.dto.response.TeamResponseDTO;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -49,6 +50,11 @@ public class TeamController {
     @GetMapping
     public ResponseEntity<List<Team>> getAll() {
         return ResponseEntity.ok(teamService.getAll());
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<List<TeamResponseDTO>> getCount() {
+        return ResponseEntity.ok(teamService.getCountById());
     }
 
     @PostMapping

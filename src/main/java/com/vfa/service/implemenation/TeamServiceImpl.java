@@ -1,5 +1,6 @@
 package com.vfa.service.implemenation;
 
+import com.vfa.dto.response.TeamResponseDTO;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Team;
 import com.vfa.repository.TeamRepository;
@@ -44,6 +45,11 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Page<Team> getByTeamId(String teamOrigin, Pageable pageable) {
         return teamRepository.getByTeamId(teamOrigin, pageable);
+    }
+
+    @Override
+    public List<TeamResponseDTO> getCountById() {
+        return teamRepository.getPlayersCountById();
     }
 
     @Override

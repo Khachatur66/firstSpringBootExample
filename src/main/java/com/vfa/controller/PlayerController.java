@@ -54,6 +54,12 @@ public class PlayerController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<?> saveAll(@RequestBody List<Player> player) {
+        playerService.savePlayers(player);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody Player player) {
         playerService.update(player);

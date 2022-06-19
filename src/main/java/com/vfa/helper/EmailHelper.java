@@ -13,14 +13,14 @@ import javax.mail.internet.MimeMessage;
 @Component
 public class EmailHelper {
 
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String username;
 
-  /*  public EmailHelper(JavaMailSender mailSender) {
+    public EmailHelper(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-    }*/
+    }
 
 
     @Async

@@ -35,6 +35,9 @@ public class Team {
     private LocalDate created;
 
     @OneToMany
+    @JoinTable(name = "team_players",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "players_id"))
     private List<Player> players;
 
     public Team() {

@@ -41,4 +41,6 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
     //Here we return the list at once, and we already regulate the implementation
     @Query("SELECT TRIM(p.firstName), p.lastName, p.age FROM Player p WHERE p.id = ?1")
     List<Object[]> getPlayerInfo1(int id);
+
+//    void saveAllPlayers(List<Player> playerList);
 }
