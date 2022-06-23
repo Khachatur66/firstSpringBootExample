@@ -11,7 +11,7 @@ public class EmployeeRequestDTO {
     @NotNull(message = "firstName should not be empty")
     private String firstName;
 
-    @NotNull(message = "firstName should not be empty")
+    @NotNull
     private String lastName;
 
     @NotNull(message = "email should not be empty")

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PlayerService extends AbstractService<Player> {
 
-    Page<Player> getByTeamId(int id, Pageable pageable);
+//    Page<Player> getByTeamId(int id, Pageable pageable);
 
     List<Player> getByAge(int from, int to);
 

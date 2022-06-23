@@ -8,6 +8,7 @@ import com.vfa.model.Referee;
 import com.vfa.repository.RefereeRepository;
 import com.vfa.service.interfaces.RefereeService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class RefereeServiceImpl implements RefereeService {
         return refereeRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void save(Referee referee) throws DuplicateDataException, BadRequestException {
 
@@ -53,11 +55,13 @@ public class RefereeServiceImpl implements RefereeService {
         refereeRepository.save(referee);
     }
 
+    @Transactional
     @Override
     public void update(Referee referee) {
         refereeRepository.save(referee);
     }
 
+    @Transactional
     @Override
     public void updateDTO(int id, RefereeRequestDTO refereeRequestDTO) throws NotFoundException {
         Referee referee = this.getById(id);
@@ -67,6 +71,7 @@ public class RefereeServiceImpl implements RefereeService {
 //        refereeRepository.updateByRefereeDto(id, refereeDTO);
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         refereeRepository.deleteById(id);

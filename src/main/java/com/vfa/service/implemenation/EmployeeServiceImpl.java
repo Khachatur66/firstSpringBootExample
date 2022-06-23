@@ -1,5 +1,6 @@
 package com.vfa.service.implemenation;
 
+import com.vfa.dto.request.EmployeePasswordRequestDTO;
 import com.vfa.dto.request.EmployeeRequestDTO;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
@@ -9,8 +10,6 @@ import com.vfa.model.Employee;
 import com.vfa.repository.EmployeeRepository;
 import com.vfa.service.interfaces.EmployeeService;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +30,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getById(int id) throws NotFoundException {
         return employeeRepository
-                .getByEmployeeEmail(id)
+                .getByEmployeePassword(id)
                 .orElseThrow(() -> new NotFoundException("could not find employee with current id: " + id));
-    }
-
-    @Override
-    public Page<Employee> getByEmployeeEmail(String password, Pageable pageable) {
-        return employeeRepository.getByEmployeeEmail(password, pageable);
     }
 
     @Override
@@ -67,17 +61,30 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode);
 
+        String password = this.savePasswordForNewUser();
+        employee.setPassword(password);
+
         employeeRepository.save(employee);
     }
 
     private String saveVerificationCode() {
         String verificationCode;
 
-       do {
-           verificationCode = RandomStringUtils.randomAlphanumeric(8);
-        }while (employeeRepository.findByVerificationCode(verificationCode) != null);
+        do {
+            verificationCode = RandomStringUtils.randomAlphanumeric(8);
+        } while (employeeRepository.findByVerificationCode(verificationCode) != null);
 
         return verificationCode;
+    }
+
+    private String savePasswordForNewUser() {
+        String password;
+
+        do {
+            password = RandomStringUtils.randomAlphanumeric(9);
+        } while (employeeRepository.findByPassword(password) != null);
+
+        return password;
     }
 
     @Transactional
@@ -97,8 +104,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
+    public void updatePassword(EmployeePasswordRequestDTO passwordRequestDTO) throws NotFoundException {
+        Employee employee = this.getById(passwordRequestDTO.getId());
+        employee.setPassword(passwordRequestDTO.getPassword());
+    }
+
+    @Transactional
+    @Override
     public void delete(int id) {
         employeeRepository.deleteById(id);
     }
 
 }
+

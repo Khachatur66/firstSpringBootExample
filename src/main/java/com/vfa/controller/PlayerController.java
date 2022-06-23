@@ -32,11 +32,11 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.getPlayerInfo(id));
     }
 
-    @GetMapping("/team/{id}")
+   /* @GetMapping("/team/{id}")
     public ResponseEntity<?> getByTeamId(@PathVariable(value = "id") int id,
                                          @PageableDefault Pageable pageable) {
         return ResponseEntity.ok(playerService.getByTeamId(id, pageable));
-    }
+    }*/
 
     @GetMapping("/by-age")
     public ResponseEntity<?> getByPlayerAge(@RequestParam int from, int to) {

@@ -8,6 +8,7 @@ import com.vfa.service.interfaces.TeamService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,28 +19,6 @@ public class TeamServiceImpl implements TeamService {
 
     public TeamServiceImpl(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
-    }
-
-    @Override
-    public void save(Team team) {
-        teamRepository.save(team);
-    }
-
-    @Override
-    public void update(Team team) {
-        teamRepository.save(team);
-    }
-
-    @Override
-    public void delete(int id) {
-        teamRepository.deleteById(id);
-    }
-
-    @Override
-    public Team getById(int id) throws NotFoundException {
-        return teamRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("Could not find team with current id: " + id));
     }
 
     @Override
@@ -68,4 +47,30 @@ public class TeamServiceImpl implements TeamService {
                 getByPlayers(id).
                 orElseThrow(() -> new NotFoundException("Could not find player with current id " + id));
     }*/
+
+    @Transactional
+    @Override
+    public void save(Team team) {
+        teamRepository.save(team);
+    }
+
+    @Transactional
+    @Override
+    public void update(Team team) {
+        teamRepository.save(team);
+    }
+
+    @Transactional
+    @Override
+    public void delete(int id) {
+        teamRepository.deleteById(id);
+    }
+
+    @Override
+    public Team getById(int id) throws NotFoundException {
+        return teamRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Could not find team with current id: " + id));
+    }
+
 }

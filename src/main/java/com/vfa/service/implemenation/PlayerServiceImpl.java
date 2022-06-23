@@ -11,6 +11,7 @@ import com.vfa.service.interfaces.PlayerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,10 +31,10 @@ public class PlayerServiceImpl implements PlayerService {
                 .orElseThrow(() -> new NotFoundException("could not find player with current id: " + id));
     }
 
-    @Override
+  /*  @Override
     public Page<Player> getByTeamId(int id, Pageable pageable) {
         return playerRepository.getByTeamId(id, pageable);
-    }
+    }*/
 
     @Override
     public List<Player> getByAge(int from, int to) {
@@ -41,40 +42,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> getAll() {
-        return playerRepository.findAll();
-    }
-
-    @Override
-    public void save(Player player) throws DuplicateDataException, BadRequestException {
-
-        String firstName = player.getFirstName();
-        String lastName = player.getLastName();
-
-        Team team = player.getTeam();
-
-        if (playerRepository.findByFirstNameAndLastName(firstName, lastName).isPresent()) {
-            throw new DuplicateDataException(firstName + " " + lastName + " already exist");
-        }
-
-        playerRepository.save(player);
-    }
-
-    @Override
-    public void savePlayers(List<Player> playerList) {
-        playerRepository.saveAll(playerList);
-    }
-
-    @Override
-    public void update(Player player) {
-        playerRepository.save(player);
-    }
-
-    @Override
     public PlayerResponseDTO getPlayerInfo(int id) {
-//        return playerRepository.getPlayerInfo(id);
-
-        
+//      return playerRepository.getPlayerInfo(id);
 
         List<Object[]> objectList = playerRepository.getPlayerInfo1(id);
 
@@ -95,6 +64,40 @@ public class PlayerServiceImpl implements PlayerService {
         return new PlayerResponseDTO(firstName, lastName, age);
     }
 
+    @Override
+    public List<Player> getAll() {
+        return playerRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public void save(Player player) throws DuplicateDataException, BadRequestException {
+
+        String firstName = player.getFirstName();
+        String lastName = player.getLastName();
+
+        if (playerRepository.findByFirstNameAndLastName(firstName, lastName).isPresent()) {
+            throw new DuplicateDataException(firstName + " " + lastName + " already exist");
+        }
+
+        playerRepository.save(player);
+    }
+
+    @Transactional
+    @Override
+    public void savePlayers(List<Player> playerList) {
+        playerRepository.saveAll(playerList);
+    }
+
+    @Transactional
+    @Override
+    public void update(Player player) {
+        playerRepository.save(player);
+    }
+
+
+
+    @Transactional
     @Override
     public void delete(int id) {
         playerRepository.deleteById(id);

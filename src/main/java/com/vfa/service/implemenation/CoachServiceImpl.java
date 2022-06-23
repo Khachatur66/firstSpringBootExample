@@ -10,6 +10,7 @@ import com.vfa.service.interfaces.CoachService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class CoachServiceImpl implements CoachService {
         return coachRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void save(Coach coach) throws DuplicateDataException, BadRequestException {
 
@@ -63,16 +65,19 @@ public class CoachServiceImpl implements CoachService {
         coachRepository.save(coach);
     }
 
+    @Transactional
     @Override
     public void update(Coach coach) {
         coachRepository.save(coach);
     }
 
+    @Transactional
     @Override
     public void updateDTO(int id, CoachRequestDTO coachRequestDTO) {
         coachRepository.updateDTO(coachRequestDTO.getFirstName(), coachRequestDTO.getLastName(), coachRequestDTO.getCoachExperience(), id);
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         coachRepository.deleteById(id);

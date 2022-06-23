@@ -1,15 +1,16 @@
 package com.vfa.controller;
 
+import com.vfa.dto.request.EmployeePasswordRequestDTO;
 import com.vfa.dto.request.EmployeeRequestDTO;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 import com.vfa.service.interfaces.EmployeeService;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/employee")
@@ -24,12 +25,6 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
         return ResponseEntity.ok(employeeService.getById(id));
-    }
-
-    @GetMapping("/password/{password}")
-    public ResponseEntity<?> getByEmail(@PathVariable(value = "password") String password,
-                                        @PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(employeeService.getByEmployeeEmail(password, pageable));
     }
 
     @GetMapping
@@ -51,9 +46,14 @@ public class EmployeeController {
     }
 
     @PutMapping("/dto")
-    public ResponseEntity<Void> updateDTO(
-            @RequestBody EmployeeRequestDTO employeeRequestDTO) throws NotFoundException {
+    public ResponseEntity<Void> updateDTO(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws NotFoundException {
         employeeService.updateEmployee(employeeRequestDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/passwordDto")
+    public ResponseEntity<Void> updatePasswordDTO(@Valid @RequestBody EmployeePasswordRequestDTO passwordRequestDTO) throws NotFoundException {
+        employeeService.updatePassword(passwordRequestDTO);
         return ResponseEntity.ok().build();
     }
 
