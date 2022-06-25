@@ -30,9 +30,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getById(int id) throws NotFoundException {
         return employeeRepository
-                .getByEmployeePassword(id)
+                .getByEmployeeId(id)
                 .orElseThrow(() -> new NotFoundException("could not find employee with current id: " + id));
     }
+
+    /*@Override
+    public EmployeePasswordRequestDTO getDtoById(int id) throws NotFoundException {
+        return employeeRepository.getDtoById(id).orElseThrow(() -> new NotFoundException("could not find employeePasswordRequestDto with current id: " + id));
+    }*/
 
     @Override
     public List<Employee> getAll() {
@@ -80,9 +85,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private String savePasswordForNewUser() {
         String password;
 
-        do {
-            password = RandomStringUtils.randomAlphanumeric(9);
-        } while (employeeRepository.findByPassword(password) != null);
+        password = RandomStringUtils.randomAlphanumeric(9);
 
         return password;
     }
@@ -104,9 +107,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void updatePassword(EmployeePasswordRequestDTO passwordRequestDTO) throws NotFoundException {
-        Employee employee = this.getById(passwordRequestDTO.getId());
-        employee.setPassword(passwordRequestDTO.getPassword());
+    public void updatePassword(EmployeePasswordRequestDTO passwordRequestDTO) {
+        employeeRepository.changePassword(passwordRequestDTO.getPassword(), passwordRequestDTO.getId());
     }
 
     @Transactional

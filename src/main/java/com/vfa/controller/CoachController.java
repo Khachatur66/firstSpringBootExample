@@ -5,6 +5,7 @@ import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Coach;
+import com.vfa.model.Team;
 import com.vfa.service.interfaces.CoachService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -61,6 +62,12 @@ public class CoachController {
         coachService.updateDTO(id, coachRequestDTO);
         return ResponseEntity.ok().build();
     }
+
+    /*@PutMapping("/team/{id}")
+    public ResponseEntity<Void> updateTeam(@RequestParam Team team, @PathVariable(value = "id") int id) {
+        coachService.updateTeam(team, id);
+        return ResponseEntity.ok().build();
+    }*/
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam int id) {

@@ -5,6 +5,7 @@ import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Coach;
+import com.vfa.model.Team;
 import com.vfa.repository.CoachRepository;
 import com.vfa.service.interfaces.CoachService;
 import org.springframework.data.domain.Page;
@@ -76,6 +77,12 @@ public class CoachServiceImpl implements CoachService {
     public void updateDTO(int id, CoachRequestDTO coachRequestDTO) {
         coachRepository.updateDTO(coachRequestDTO.getFirstName(), coachRequestDTO.getLastName(), coachRequestDTO.getCoachExperience(), id);
     }
+
+    /*@Transactional
+    @Override
+    public void updateTeam(Team team, int id) {
+        coachRepository.updateTeam(team, id);
+    }*/
 
     @Transactional
     @Override

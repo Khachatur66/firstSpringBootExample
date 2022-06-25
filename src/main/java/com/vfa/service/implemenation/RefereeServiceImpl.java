@@ -46,6 +46,12 @@ public class RefereeServiceImpl implements RefereeService {
             throw new DuplicateDataException(firstName + " firstName already exist");
         }
 
+        /*int age1 = refereeRepository.findAge(referee.getAge());
+
+        if (age1 > 60) {
+            throw new BadRequestException("the age of referee should not exceed 60");
+        }*/
+
         String lastName = referee.getLastName();
 
         int count = refereeRepository.countByLastName(lastName);

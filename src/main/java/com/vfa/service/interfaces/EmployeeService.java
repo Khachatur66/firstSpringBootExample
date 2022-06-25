@@ -11,4 +11,6 @@ public interface EmployeeService extends AbstractService<Employee>{
 
     void updatePassword(EmployeePasswordRequestDTO passwordRequestDTO) throws NotFoundException;
 
+//    EmployeePasswordRequestDTO getDtoById(int id) throws NotFoundException;
+
 }

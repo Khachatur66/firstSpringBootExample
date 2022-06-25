@@ -14,6 +14,8 @@ public interface RefereeRepository extends JpaRepository<Referee, Integer> {
 
     int countByLastName(String lastName);
 
+//    int findAge(int age);
+
     @Query("SELECT r FROM Referee r WHERE r.refereeExperience BETWEEN ?1 AND ?2  ORDER BY r.refereeExperience DESC")
     List<Referee> countRefereeExperience(int from, int to);
 
