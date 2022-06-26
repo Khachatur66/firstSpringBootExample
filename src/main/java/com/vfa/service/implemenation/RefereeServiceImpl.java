@@ -1,6 +1,7 @@
 package com.vfa.service.implemenation;
 
 import com.vfa.dto.request.RefereeRequest;
+import com.vfa.dto.response.RefereeResponse;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -29,6 +30,11 @@ public class RefereeServiceImpl implements RefereeService {
     @Override
     public List<Referee> getExperience(int from, int to) {
         return refereeRepository.countRefereeExperience(from, to);
+    }
+
+    @Override
+    public RefereeResponse getRefereeInfo(int id) {
+        return refereeRepository.getRefereeInfo(id);
     }
 
     @Override

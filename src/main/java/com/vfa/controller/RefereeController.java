@@ -25,6 +25,11 @@ public class RefereeController {
         return ResponseEntity.ok(refereeService.getById(id));
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> getInfoById(@PathVariable(value = "id") int id) {
+        return ResponseEntity.ok(refereeService.getRefereeInfo(id));
+    }
+
     @GetMapping("/experience")
     public ResponseEntity<?> getExperience(int from, int to) {
         return ResponseEntity.ok(refereeService.getExperience(from, to));
