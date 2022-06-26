@@ -1,6 +1,6 @@
 package com.vfa.repository;
 
-import com.vfa.dto.response.TeamResponseDTO;
+import com.vfa.dto.response.TeamResponse;
 import com.vfa.model.Team;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Query("SELECT t FROM Team t WHERE t.teamOrigin = ?1")
     Page<Team> getByTeamId(String teamOrigin, Pageable pageable);
 
-    @Query("SELECT new com.vfa.dto.response.TeamResponseDTO(t.name, t.players.size) FROM Team t")
-    List<TeamResponseDTO> getPlayersCountById();
+    @Query("SELECT new com.vfa.dto.response.TeamResponse(t.name, t.players.size) FROM Team t")
+    List<TeamResponse> getPlayersCountById();
 
 }

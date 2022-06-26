@@ -1,6 +1,6 @@
 package com.vfa.service.implemenation;
 
-import com.vfa.dto.response.TeamResponseDTO;
+import com.vfa.dto.response.TeamResponse;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Team;
 import com.vfa.repository.TeamRepository;
@@ -27,7 +27,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamResponseDTO> getCountById() {
+    public List<TeamResponse> getCountById() {
         return teamRepository.getPlayersCountById();
     }
 

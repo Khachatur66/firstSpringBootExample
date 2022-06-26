@@ -1,15 +1,12 @@
 package com.vfa.service.implemenation;
 
-import com.vfa.dto.response.PlayerResponseDTO;
+import com.vfa.dto.response.PlayerResponse;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Player;
-import com.vfa.model.Team;
 import com.vfa.repository.PlayerRepository;
 import com.vfa.service.interfaces.PlayerService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +39,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public PlayerResponseDTO getPlayerInfo(int id) {
+    public PlayerResponse getPlayerInfo(int id) {
 //      return playerRepository.getPlayerInfo(id);
 
         List<Object[]> objectList = playerRepository.getPlayerInfo1(id);
@@ -61,7 +58,7 @@ public class PlayerServiceImpl implements PlayerService {
         String lastName = player.getLastName();
         int age = player.getAge();*/
 
-        return new PlayerResponseDTO(firstName, lastName, age);
+        return new PlayerResponse(firstName, lastName, age);
     }
 
     @Override

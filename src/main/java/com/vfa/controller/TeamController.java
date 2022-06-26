@@ -1,10 +1,9 @@
 package com.vfa.controller;
 
-import com.vfa.dto.response.TeamResponseDTO;
+import com.vfa.dto.response.TeamResponse;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
-import com.vfa.model.Player;
 import com.vfa.model.Team;
 import com.vfa.service.interfaces.TeamService;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +52,7 @@ public class TeamController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<List<TeamResponseDTO>> getCount() {
+    public ResponseEntity<List<TeamResponse>> getCount() {
         return ResponseEntity.ok(teamService.getCountById());
     }
 

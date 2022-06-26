@@ -12,7 +12,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @ToString
 @EqualsAndHashCode*/
-public class EmployeePasswordRequestDTO {
+public class EmployeePasswordRequest {
 
     @Positive(message = "Id must be positive number")
     private int id;

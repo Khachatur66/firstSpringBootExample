@@ -1,7 +1,7 @@
 package com.vfa.service.implemenation;
 
-import com.vfa.dto.request.EmployeePasswordRequestDTO;
-import com.vfa.dto.request.EmployeeRequestDTO;
+import com.vfa.dto.request.EmployeePasswordRequest;
+import com.vfa.dto.request.EmployeeRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -13,7 +13,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -38,6 +40,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeePasswordRequestDTO getDtoById(int id) throws NotFoundException {
         return employeeRepository.getDtoById(id).orElseThrow(() -> new NotFoundException("could not find employeePasswordRequestDto with current id: " + id));
     }*/
+
+    @Override
+    public Map<String, Object> getEmployeeById(int id) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("firstName", employeeRepository.getEmployeeById(id)[0]);
+      /*  map.put("lastName", employeeRepository.getEmployeeById(id)[1]);
+        map.put("verificationCode", employeeRepository.getEmployeeById(id)[2]);*/
+
+        return map;
+    }
 
     @Override
     public List<Employee> getAll() {
@@ -86,7 +98,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         String password;
 
         password = RandomStringUtils.randomAlphanumeric(9);
-
         return password;
     }
 
@@ -98,7 +109,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void updateEmployee(EmployeeRequestDTO requestDTO) throws NotFoundException {
+    public void updateEmployee(EmployeeRequest requestDTO) throws NotFoundException {
         Employee employee = this.getById(requestDTO.getId());
         employee.setFirstName(requestDTO.getFirstName());
         employee.setLastName(requestDTO.getLastName());
@@ -107,7 +118,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void updatePassword(EmployeePasswordRequestDTO passwordRequestDTO) {
+    public void updatePassword(EmployeePasswordRequest passwordRequestDTO) {
         employeeRepository.changePassword(passwordRequestDTO.getPassword(), passwordRequestDTO.getId());
     }
 
@@ -116,6 +127,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delete(int id) {
         employeeRepository.deleteById(id);
     }
-
 }
 

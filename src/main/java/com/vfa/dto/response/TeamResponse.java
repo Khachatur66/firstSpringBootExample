@@ -1,12 +1,12 @@
 package com.vfa.dto.response;
 
-public class TeamResponseDTO {
+public class TeamResponse {
 
     private String name;
 
     private int playerCount;
 
-    public TeamResponseDTO(String name, int playerCount) {
+    public TeamResponse(String name, int playerCount) {
         this.name = name;
         this.playerCount = playerCount;
     }

@@ -1,6 +1,6 @@
 package com.vfa.dto.response;
 
-public class PlayerResponseDTO {
+public class PlayerResponse {
 
     private String firstName;
 
@@ -8,10 +8,10 @@ public class PlayerResponseDTO {
 
     private int age;
 
-    public PlayerResponseDTO() {
+    public PlayerResponse() {
     }
 
-    public PlayerResponseDTO(String firstName, String lastName, int age) {
+    public PlayerResponse(String firstName, String lastName, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;

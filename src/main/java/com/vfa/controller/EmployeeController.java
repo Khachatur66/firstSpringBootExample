@@ -1,7 +1,7 @@
 package com.vfa.controller;
 
-import com.vfa.dto.request.EmployeePasswordRequestDTO;
-import com.vfa.dto.request.EmployeeRequestDTO;
+import com.vfa.dto.request.EmployeePasswordRequest;
+import com.vfa.dto.request.EmployeeRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -27,6 +27,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getById(id));
     }
 
+    @GetMapping("/map/{id}")
+    public ResponseEntity<?> getEmployeeById(@PathVariable(value = "id") int id)  {
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
+
     @GetMapping
     public ResponseEntity<Void> getAll() {
         employeeService.getAll();
@@ -46,13 +51,13 @@ public class EmployeeController {
     }
 
     @PutMapping("/dto")
-    public ResponseEntity<Void> updateDTO(@Valid @RequestBody EmployeeRequestDTO employeeRequestDTO) throws NotFoundException {
-        employeeService.updateEmployee(employeeRequestDTO);
+    public ResponseEntity<Void> updateDTO(@Valid @RequestBody EmployeeRequest employeeRequest) throws NotFoundException {
+        employeeService.updateEmployee(employeeRequest);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Void> updatePasswordDTO(@Valid @RequestBody EmployeePasswordRequestDTO passwordRequestDTO) throws NotFoundException {
+    public ResponseEntity<Void> updatePasswordDTO(@Valid @RequestBody EmployeePasswordRequest passwordRequestDTO) throws NotFoundException {
         employeeService.updatePassword(passwordRequestDTO);
         return ResponseEntity.ok().build();
     }

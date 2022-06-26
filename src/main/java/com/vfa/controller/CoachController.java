@@ -1,11 +1,10 @@
 package com.vfa.controller;
 
-import com.vfa.dto.request.CoachRequestDTO;
+import com.vfa.dto.request.CoachRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Coach;
-import com.vfa.model.Team;
 import com.vfa.service.interfaces.CoachService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -58,8 +57,8 @@ public class CoachController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateCoachDTO(@PathVariable(value = "id") int id,
-                                               @RequestBody CoachRequestDTO coachRequestDTO) throws NotFoundException {
-        coachService.updateDTO(id, coachRequestDTO);
+                                               @RequestBody CoachRequest coachRequest) throws NotFoundException {
+        coachService.updateDTO(id, coachRequest);
         return ResponseEntity.ok().build();
     }
 

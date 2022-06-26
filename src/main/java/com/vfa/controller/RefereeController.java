@@ -1,6 +1,6 @@
 package com.vfa.controller;
 
-import com.vfa.dto.request.RefereeRequestDTO;
+import com.vfa.dto.request.RefereeRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -50,8 +50,8 @@ public class RefereeController {
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateDTO(@PathVariable(value = "id") int id,
-                                          @RequestBody RefereeRequestDTO refereeRequestDTO) throws NotFoundException {
-        refereeService.updateDTO(id, refereeRequestDTO);
+                                          @RequestBody RefereeRequest refereeRequest) throws NotFoundException {
+        refereeService.updateDTO(id, refereeRequest);
         return ResponseEntity.ok().build();
     }
 

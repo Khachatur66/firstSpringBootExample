@@ -1,7 +1,6 @@
 package com.vfa.service.interfaces;
 
-import com.vfa.dto.response.TeamResponseDTO;
-import com.vfa.model.Player;
+import com.vfa.dto.response.TeamResponse;
 import com.vfa.model.Team;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,5 +15,5 @@ public interface TeamService extends AbstractService<Team>{
 
 //    List<Team> getPlayersNameById(int id) throws NotFoundException;
 
-    List<TeamResponseDTO> getCountById();
+    List<TeamResponse> getCountById();
 }

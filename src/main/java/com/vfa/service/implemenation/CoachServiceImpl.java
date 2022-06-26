@@ -1,11 +1,10 @@
 package com.vfa.service.implemenation;
 
-import com.vfa.dto.request.CoachRequestDTO;
+import com.vfa.dto.request.CoachRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Coach;
-import com.vfa.model.Team;
 import com.vfa.repository.CoachRepository;
 import com.vfa.service.interfaces.CoachService;
 import org.springframework.data.domain.Page;
@@ -74,8 +73,8 @@ public class CoachServiceImpl implements CoachService {
 
     @Transactional
     @Override
-    public void updateDTO(int id, CoachRequestDTO coachRequestDTO) {
-        coachRepository.updateDTO(coachRequestDTO.getFirstName(), coachRequestDTO.getLastName(), coachRequestDTO.getCoachExperience(), id);
+    public void updateDTO(int id, CoachRequest coachRequest) {
+        coachRepository.updateDTO(coachRequest.getFirstName(), coachRequest.getLastName(), coachRequest.getCoachExperience(), id);
     }
 
     /*@Transactional

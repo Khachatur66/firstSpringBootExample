@@ -1,6 +1,6 @@
 package com.vfa.service.implemenation;
 
-import com.vfa.dto.request.RefereeRequestDTO;
+import com.vfa.dto.request.RefereeRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -69,11 +69,11 @@ public class RefereeServiceImpl implements RefereeService {
 
     @Transactional
     @Override
-    public void updateDTO(int id, RefereeRequestDTO refereeRequestDTO) throws NotFoundException {
+    public void updateDTO(int id, RefereeRequest refereeRequest) throws NotFoundException {
         Referee referee = this.getById(id);
-        referee.setFirstName(refereeRequestDTO.getFirstName());
-        referee.setLastName(refereeRequestDTO.getLastName());
-        referee.setRefereeExperience(refereeRequestDTO.getRefereeExperience());
+        referee.setFirstName(refereeRequest.getFirstName());
+        referee.setLastName(refereeRequest.getLastName());
+        referee.setRefereeExperience(refereeRequest.getRefereeExperience());
 //        refereeRepository.updateByRefereeDto(id, refereeDTO);
     }
 

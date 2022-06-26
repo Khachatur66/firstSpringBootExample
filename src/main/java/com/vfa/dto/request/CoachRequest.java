@@ -3,30 +3,19 @@ package com.vfa.dto.request;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-public class EmployeeRequestDTO {
-
-    @Positive(message = "Id must be positive number")
-    private int id;
+public class CoachRequest {
 
     @NotNull(message = "firstName should not be empty")
     private String firstName;
 
-    @NotNull
+    @NotNull(message = "firstName should not be empty")
     private String lastName;
 
-    @NotNull(message = "email should not be empty")
-    private String email;
+    @Positive(message = "experience must be positive number")
+    private int coachExperience;
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setFirstName(String firstName) {
@@ -41,11 +30,11 @@ public class EmployeeRequestDTO {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public int getCoachExperience() {
+        return coachExperience;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCoachExperience(int coachExperience) {
+        this.coachExperience = coachExperience;
     }
 }
