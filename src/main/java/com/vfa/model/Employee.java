@@ -52,6 +52,12 @@ public class Employee {
         created = LocalDate.now();
     }
 
+    public Employee(String firstName, String lastName, String verificationCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.verificationCode = verificationCode;
+    }
+
     public int getId() {
         return id;
     }

@@ -1,7 +1,9 @@
 package com.vfa.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
 @AllArgsConstructor
 public class RefereeResponse {
     private String firstName;
@@ -11,4 +13,8 @@ public class RefereeResponse {
     private int age;
 
     private int experience;
+
+    private String city;
+
+    private String country;
 }

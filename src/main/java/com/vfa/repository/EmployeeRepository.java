@@ -20,7 +20,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Optional<Employee> getByEmployeeId(int id);
 
 
-    @Query("SELECT firstName, lastName, verificationCode FROM Employee WHERE id = ?1")
+    @Query("SELECT new com.vfa.model.Employee(firstName, lastName, verificationCode) FROM Employee WHERE id = ?1")
     Object[] getEmployeeById(int id);
 
     @Query("SELECT e FROM Employee e WHERE e.id = ?1")

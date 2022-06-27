@@ -43,10 +43,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Map<String, Object> getEmployeeById(int id) {
-        Map<String, Object> map = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("firstName", employeeRepository.getEmployeeById(id)[0]);
-      /*  map.put("lastName", employeeRepository.getEmployeeById(id)[1]);
-        map.put("verificationCode", employeeRepository.getEmployeeById(id)[2]);*/
+/*        map.put("lastName", employeeRepository.getEmployeeById(id));
+        map.put("verificationCode", employeeRepository.getEmployeeById(id));*/
 
         return map;
     }
