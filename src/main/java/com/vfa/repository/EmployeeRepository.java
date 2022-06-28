@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,9 +20,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("SELECT e FROM Employee e WHERE e.id = ?1")
     Optional<Employee> getByEmployeeId(int id);
 
-
-    @Query("SELECT new com.vfa.model.Employee(firstName, lastName, verificationCode) FROM Employee WHERE id = ?1")
-    Object[] getEmployeeById(int id);
+    @Query("SELECT firstName, lastName, created FROM Employee WHERE id = ?1")
+    List<Object[]> getEmployeeById(int id);
 
     @Query("SELECT e FROM Employee e WHERE e.id = ?1")
     Optional<EmployeePasswordRequest> getDtoById(int id);

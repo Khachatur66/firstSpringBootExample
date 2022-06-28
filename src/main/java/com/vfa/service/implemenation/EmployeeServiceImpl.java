@@ -13,6 +13,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Map<String, Object> getEmployeeById(int id) {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("firstName", employeeRepository.getEmployeeById(id)[0]);
-/*        map.put("lastName", employeeRepository.getEmployeeById(id));
-        map.put("verificationCode", employeeRepository.getEmployeeById(id));*/
+        Object[] objects = employeeRepository.getEmployeeById(id).get(0);
+        String firstName = objects[0].toString();
+        String lastName = objects[1].toString();
+        LocalDate created = (LocalDate) objects[2];
+
+        map.put("firstName", firstName);
+        map.put("lastName", lastName);
+        map.put("created", created);
 
         return map;
     }

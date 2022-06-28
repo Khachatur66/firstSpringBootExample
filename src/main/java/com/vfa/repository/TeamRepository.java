@@ -22,4 +22,6 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Query("SELECT new com.vfa.dto.response.TeamResponse(t.name, t.players.size) FROM Team t")
     List<TeamResponse> getPlayersCountById();
 
+
+
 }

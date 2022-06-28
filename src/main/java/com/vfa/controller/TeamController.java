@@ -29,6 +29,11 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getById(id));
     }
 
+    @GetMapping("/teamId/{id}")
+    public ResponseEntity<Object> getTeamById(@PathVariable(value = "id") int id)  {
+        return ResponseEntity.ok(teamService.getTeamById(id));
+    }
+
     @GetMapping("/player/{teamOrigin}")
     public ResponseEntity<?> getPaginationByTeamId(@PathVariable(value = "teamOrigin") String teamOrigin,
                                                    @PageableDefault Pageable pageable) {
@@ -51,6 +56,11 @@ public class TeamController {
         return ResponseEntity.ok(teamService.getAll());
     }
 
+    @GetMapping("/pageable")
+    public ResponseEntity<?> getTeams(Pageable pageable) {
+        return ResponseEntity.ok(teamService.getTeams(pageable));
+    }
+
     @GetMapping("/count")
     public ResponseEntity<List<TeamResponse>> getCount() {
         return ResponseEntity.ok(teamService.getCountById());
@@ -65,6 +75,13 @@ public class TeamController {
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody Team team) {
         teamService.update(team);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<Void> edit(@RequestParam(value = "name") String name,
+                                     @RequestParam(value = "id") int id) {
+        teamService.edit(name, id);
         return ResponseEntity.ok().build();
     }
 
