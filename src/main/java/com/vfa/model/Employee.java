@@ -1,9 +1,12 @@
 package com.vfa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vfa.enums.UserStatus;
+import org.hibernate.metamodel.model.convert.internal.OrdinalEnumValueConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -21,24 +24,24 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore
-    @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @JsonIgnore
     @Column(nullable = false)
     private LocalDate created;
 
     @JsonIgnore
     private String verificationCode;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "employee_address",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
@@ -47,6 +50,12 @@ public class Employee {
     public Employee() {
         status = UserStatus.UNVERIFIED;
         created = LocalDate.now();
+    }
+
+    public Employee(String firstName, String lastName, String verificationCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.verificationCode = verificationCode;
     }
 
     public int getId() {
@@ -117,8 +126,8 @@ public class Employee {
         return addresses;
     }
 
-    public void setAddresses(List<Address> address) {
-        this.addresses = address;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
@@ -134,18 +143,5 @@ public class Employee {
         return Objects.hash(id, firstName, lastName, email, password, status, created, verificationCode, addresses);
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", status=" + status +
-                ", created=" + created +
-                ", verificationCode='" + verificationCode + '\'' +
-                ", address=" + addresses +
-                '}';
-    }
+
 }

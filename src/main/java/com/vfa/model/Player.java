@@ -18,10 +18,9 @@ public class Player extends AbstractEntity{
     @Column(nullable = false)
     private PlayerStatus status;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(nullable = false)
-    @JsonBackReference
-    private Team team;
+    private Team team;*/
 
     public Player() {
         this.status = PlayerStatus.ACTIVE;
@@ -52,25 +51,17 @@ public class Player extends AbstractEntity{
         this.status = status;
     }
 
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Double.compare(player.height, height) == 0 && weight == player.weight && status == player.status && Objects.equals(team, player.team);
+        return Double.compare(player.height, height) == 0 && weight == player.weight && status == player.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(height, weight, status, team);
+        return Objects.hash(height, weight, status);
     }
 
     @Override
@@ -79,7 +70,6 @@ public class Player extends AbstractEntity{
                 "height=" + height +
                 ", weight=" + weight +
                 ", status=" + status +
-                ", team=" + team +
                 '}';
     }
 }

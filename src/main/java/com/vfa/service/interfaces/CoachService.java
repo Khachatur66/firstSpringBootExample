@@ -1,6 +1,6 @@
 package com.vfa.service.interfaces;
 
-import com.vfa.dto.request.CoachRequestDTO;
+import com.vfa.dto.request.CoachRequest;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Coach;
 import org.springframework.data.domain.Page;
@@ -14,5 +14,9 @@ public interface CoachService extends AbstractService<Coach> {
 
     Page<Coach> getByTeamId(int id, Pageable pageable);
 
-    void updateDTO(int id, CoachRequestDTO coachRequestDTO) throws NotFoundException;
+    void updateDTO(int id, CoachRequest coachRequest) throws NotFoundException;
+
+
+//    void updateTeam(Team team, int id);
+
 }

@@ -22,9 +22,41 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
+        return ResponseEntity.ok(playerService.getById(id));
+    }
+
+    @GetMapping("/player/{id}")
+    public ResponseEntity<?> getPlayerInfo(@PathVariable(value = "id") int id) throws NotFoundException {
+        return ResponseEntity.ok(playerService.getPlayerInfo(id));
+    }
+
+   /* @GetMapping("/team/{id}")
+    public ResponseEntity<?> getByTeamId(@PathVariable(value = "id") int id,
+                                         @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(playerService.getByTeamId(id, pageable));
+    }*/
+
+    @GetMapping("/by-age")
+    public ResponseEntity<?> getByPlayerAge(@RequestParam int from, int to) {
+        return ResponseEntity.ok(playerService.getByAge(from, to));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Player>> getAll() {
+        return ResponseEntity.ok(playerService.getAll());
+    }
+
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody Player player) throws DuplicateDataException, BadRequestException {
         playerService.save(player);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> saveAll(@RequestBody List<Player> player) {
+        playerService.savePlayers(player);
         return ResponseEntity.ok().build();
     }
 
@@ -38,31 +70,5 @@ public class PlayerController {
     public ResponseEntity<Void> delete(@RequestParam int id) {
         playerService.delete(id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return ResponseEntity.ok(playerService.getById(id));
-    }
-
-    @GetMapping("/player/{id}")
-    public ResponseEntity<?> getPlayerInfo(@PathVariable(value = "id") int id) throws NotFoundException {
-        return ResponseEntity.ok(playerService.getPlayerInfo(id));
-    }
-
-    @GetMapping("/team/{id}")
-    public ResponseEntity<?> getByTeamId(@PathVariable(value = "id") int id,
-                                         @PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(playerService.getByTeamId(id, pageable));
-    }
-
-    @GetMapping("/by-age")
-    public ResponseEntity<?> getByPlayerAge(@RequestParam int from, int to) {
-        return ResponseEntity.ok(playerService.getByAge(from, to));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Player>> getAll() {
-        return ResponseEntity.ok(playerService.getAll());
     }
 }

@@ -20,6 +20,9 @@ public class Referee extends AbstractEntity{
     @Column(nullable = false)
     private LocalDate created;
 
+    @Column(nullable = false)
+    private int address_id;
+
     public Referee() {
         this.status = true;
         this.created = LocalDate.now();

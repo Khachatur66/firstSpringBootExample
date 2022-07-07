@@ -1,6 +1,7 @@
 package com.vfa.service.implemenation;
 
-import com.vfa.dto.request.RefereeRequestDTO;
+import com.vfa.dto.request.RefereeRequest;
+import com.vfa.dto.response.RefereeResponse;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -8,13 +9,20 @@ import com.vfa.model.Referee;
 import com.vfa.repository.RefereeRepository;
 import com.vfa.service.interfaces.RefereeService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Service
 public class RefereeServiceImpl implements RefereeService {
 
     private final RefereeRepository refereeRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public RefereeServiceImpl(RefereeRepository refereeRepository) {
         this.refereeRepository = refereeRepository;
@@ -31,10 +39,35 @@ public class RefereeServiceImpl implements RefereeService {
     }
 
     @Override
+    public RefereeResponse getRefereeInfo(int id) {
+        return refereeRepository.getRefereeInfo(id);
+    }
+
+    @Override
+    public Object getRefereeById(int id) throws BadRequestException {
+        String select = "SELECT";
+
+        if (id == 1) {
+            select = select + " firstName, age, street, building";
+        }else if (id == 3) {
+            select = select + " firstName, experience, city, country";
+        }else {
+            throw new BadRequestException("Cannot get Referee with current id");
+        }
+
+        select = select + " FROM referee LEFT JOIN address ON address_id = id WHERE id = ?1";
+
+        Query query = entityManager.createNativeQuery(select);
+        query.setParameter(1, id);
+        return query.getSingleResult();
+    }
+
+    @Override
     public List<Referee> getAll() {
         return refereeRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void save(Referee referee) throws DuplicateDataException, BadRequestException {
 
@@ -43,6 +76,12 @@ public class RefereeServiceImpl implements RefereeService {
         if (refereeRepository.findByFirstName(firstName) != null) {
             throw new DuplicateDataException(firstName + " firstName already exist");
         }
+
+        /*int age1 = refereeRepository.findAge(referee.getAge());
+
+        if (age1 > 60) {
+            throw new BadRequestException("the age of referee should not exceed 60");
+        }*/
 
         String lastName = referee.getLastName();
 
@@ -53,20 +92,23 @@ public class RefereeServiceImpl implements RefereeService {
         refereeRepository.save(referee);
     }
 
+    @Transactional
     @Override
     public void update(Referee referee) {
         refereeRepository.save(referee);
     }
 
+    @Transactional
     @Override
-    public void updateDTO(int id, RefereeRequestDTO refereeRequestDTO) throws NotFoundException {
+    public void updateDTO(int id, RefereeRequest refereeRequest) throws NotFoundException {
         Referee referee = this.getById(id);
-        referee.setFirstName(refereeRequestDTO.getFirstName());
-        referee.setLastName(refereeRequestDTO.getLastName());
-        referee.setRefereeExperience(refereeRequestDTO.getRefereeExperience());
+        referee.setFirstName(refereeRequest.getFirstName());
+        referee.setLastName(refereeRequest.getLastName());
+        referee.setRefereeExperience(refereeRequest.getRefereeExperience());
 //        refereeRepository.updateByRefereeDto(id, refereeDTO);
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         refereeRepository.deleteById(id);

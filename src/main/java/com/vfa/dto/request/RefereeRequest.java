@@ -1,6 +1,6 @@
 package com.vfa.dto.request;
 
-public class RefereeRequestDTO {
+public class RefereeRequest {
 
     private String firstName;
 

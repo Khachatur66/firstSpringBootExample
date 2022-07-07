@@ -1,6 +1,6 @@
 package com.vfa.controller;
 
-import com.vfa.dto.request.CoachRequestDTO;
+import com.vfa.dto.request.CoachRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -56,10 +56,17 @@ public class CoachController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCoachDTO(@PathVariable(value = "id") int id, @RequestBody CoachRequestDTO coachRequestDTO) throws NotFoundException {
-        coachService.updateDTO(id, coachRequestDTO);
+    public ResponseEntity<Void> updateCoachDTO(@PathVariable(value = "id") int id,
+                                               @RequestBody CoachRequest coachRequest) throws NotFoundException {
+        coachService.updateDTO(id, coachRequest);
         return ResponseEntity.ok().build();
     }
+
+    /*@PutMapping("/team/{id}")
+    public ResponseEntity<Void> updateTeam(@RequestParam Team team, @PathVariable(value = "id") int id) {
+        coachService.updateTeam(team, id);
+        return ResponseEntity.ok().build();
+    }*/
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam int id) {

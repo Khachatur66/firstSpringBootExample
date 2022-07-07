@@ -1,6 +1,7 @@
 package com.vfa.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +22,9 @@ public class Address {
 
     @Column(nullable = false)
     private String building;
+
+    @ManyToMany
+    private List<Employee> employeeList;
 
     public int getId() {
         return id;
@@ -62,27 +66,26 @@ public class Address {
         this.building = building;
     }
 
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return id == address.id && Objects.equals(country, address.country) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(building, address.building);
+        return id == address.id && Objects.equals(country, address.country) && Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(building, address.building) && Objects.equals(employeeList, address.employeeList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, city, street, building);
+        return Objects.hash(id, country, city, street, building, employeeList);
     }
 
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", building='" + building + '\'' +
-                '}';
-    }
+
 }

@@ -1,9 +1,6 @@
 package com.vfa.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,7 +8,7 @@ import java.util.Objects;
 public class Coach extends AbstractEntity{
 
     @JoinColumn(nullable = false)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Team team;
 
     @Column(nullable = false)

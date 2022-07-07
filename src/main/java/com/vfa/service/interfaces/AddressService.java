@@ -8,5 +8,4 @@ import java.util.List;
 public interface AddressService extends AbstractService<Address>{
 
     List<Address> getCity(String name) throws NotFoundException;
-
 }

@@ -7,6 +7,7 @@ import com.vfa.model.Address;
 import com.vfa.repository.AddressRepository;
 import com.vfa.service.interfaces.AddressService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findAll();
     }
 
+    @Transactional
     @Override
     public void save(Address address) throws DuplicateDataException, BadRequestException {
 
@@ -57,14 +59,15 @@ public class AddressServiceImpl implements AddressService {
         addressRepository.save(address);
     }
 
+    @Transactional
     @Override
     public void update(Address address) {
         addressRepository.save(address);
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         addressRepository.deleteById(id);
     }
-
 }

@@ -1,6 +1,6 @@
 package com.vfa.controller;
 
-import com.vfa.dto.request.RefereeRequestDTO;
+import com.vfa.dto.request.RefereeRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -23,6 +23,16 @@ public class RefereeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
         return ResponseEntity.ok(refereeService.getById(id));
+    }
+
+    @GetMapping("/select/{id}")
+    public ResponseEntity<?> getTeamById(@PathVariable(value = "id") int id) throws BadRequestException {
+        return ResponseEntity.ok(refereeService.getRefereeById(id));
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> getInfoById(@PathVariable(value = "id") int id) {
+        return ResponseEntity.ok(refereeService.getRefereeInfo(id));
     }
 
     @GetMapping("/experience")
@@ -50,8 +60,8 @@ public class RefereeController {
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateDTO(@PathVariable(value = "id") int id,
-                                          @RequestBody RefereeRequestDTO refereeRequestDTO) throws NotFoundException {
-        refereeService.updateDTO(id, refereeRequestDTO);
+                                          @RequestBody RefereeRequest refereeRequest) throws NotFoundException {
+        refereeService.updateDTO(id, refereeRequest);
         return ResponseEntity.ok().build();
     }
 

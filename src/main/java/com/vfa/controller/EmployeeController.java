@@ -1,5 +1,7 @@
 package com.vfa.controller;
 
+import com.vfa.dto.request.EmployeePasswordRequest;
+import com.vfa.dto.request.EmployeeRequest;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -7,6 +9,8 @@ import com.vfa.model.Employee;
 import com.vfa.service.interfaces.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/employee")
@@ -16,6 +20,22 @@ public class EmployeeController {
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
+        return ResponseEntity.ok(employeeService.getById(id));
+    }
+
+    @GetMapping("/map/{id}")
+    public ResponseEntity<?> getEmployeeById(@PathVariable(value = "id") int id)  {
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Void> getAll() {
+        employeeService.getAll();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping
@@ -30,20 +50,22 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/dto")
+    public ResponseEntity<Void> updateDTO(@Valid @RequestBody EmployeeRequest employeeRequest) throws NotFoundException {
+        employeeService.updateEmployee(employeeRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<Void> updatePasswordDTO(@Valid @RequestBody EmployeePasswordRequest passwordRequestDTO) throws NotFoundException {
+        employeeService.updatePassword(passwordRequestDTO);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam int id) {
         employeeService.delete(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable(value = "id") int id) throws NotFoundException {
-        return ResponseEntity.ok(employeeService.getById(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<Void> getAll() {
-        employeeService.getAll();
-        return ResponseEntity.ok().build();
-    }
 }
