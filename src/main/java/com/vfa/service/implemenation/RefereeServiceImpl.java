@@ -11,12 +11,18 @@ import com.vfa.service.interfaces.RefereeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Service
 public class RefereeServiceImpl implements RefereeService {
 
     private final RefereeRepository refereeRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public RefereeServiceImpl(RefereeRepository refereeRepository) {
         this.refereeRepository = refereeRepository;
@@ -35,6 +41,25 @@ public class RefereeServiceImpl implements RefereeService {
     @Override
     public RefereeResponse getRefereeInfo(int id) {
         return refereeRepository.getRefereeInfo(id);
+    }
+
+    @Override
+    public Object getRefereeById(int id) throws BadRequestException {
+        String select = "SELECT";
+
+        if (id == 1) {
+            select = select + " firstName, age, street, building";
+        }else if (id == 3) {
+            select = select + " firstName, experience, city, country";
+        }else {
+            throw new BadRequestException("Cannot get Referee with current id");
+        }
+
+        select = select + " FROM referee LEFT JOIN address ON address_id = id WHERE id = ?1";
+
+        Query query = entityManager.createNativeQuery(select);
+        query.setParameter(1, id);
+        return query.getSingleResult();
     }
 
     @Override

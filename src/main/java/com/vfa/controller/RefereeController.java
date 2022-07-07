@@ -25,6 +25,11 @@ public class RefereeController {
         return ResponseEntity.ok(refereeService.getById(id));
     }
 
+    @GetMapping("/select/{id}")
+    public ResponseEntity<?> getTeamById(@PathVariable(value = "id") int id) throws BadRequestException {
+        return ResponseEntity.ok(refereeService.getRefereeById(id));
+    }
+
     @GetMapping("/info/{id}")
     public ResponseEntity<?> getInfoById(@PathVariable(value = "id") int id) {
         return ResponseEntity.ok(refereeService.getRefereeInfo(id));

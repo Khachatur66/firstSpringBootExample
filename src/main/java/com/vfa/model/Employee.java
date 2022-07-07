@@ -24,8 +24,6 @@ public class Employee {
     @Column(nullable = false)
     private String lastName;
 
-    @Email
-    @Column(nullable = false, unique = true)
     private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -35,13 +33,15 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @JsonIgnore
     @Column(nullable = false)
     private LocalDate created;
 
     @JsonIgnore
     private String verificationCode;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "employee_address",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
@@ -126,8 +126,8 @@ public class Employee {
         return addresses;
     }
 
-    public void setAddresses(List<Address> address) {
-        this.addresses = address;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override
@@ -143,18 +143,5 @@ public class Employee {
         return Objects.hash(id, firstName, lastName, email, password, status, created, verificationCode, addresses);
     }
 
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", status=" + status +
-                ", created=" + created +
-                ", verificationCode='" + verificationCode + '\'' +
-                ", address=" + addresses +
-                '}';
-    }
+
 }

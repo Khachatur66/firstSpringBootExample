@@ -18,7 +18,7 @@ public class Player extends AbstractEntity{
     @Column(nullable = false)
     private PlayerStatus status;
 
-   /* @ManyToOne
+    /*@ManyToOne
     @JoinColumn(nullable = false)
     private Team team;*/
 
@@ -50,14 +50,6 @@ public class Player extends AbstractEntity{
     public void setStatus(PlayerStatus status) {
         this.status = status;
     }
-
-   /* public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }*/
 
     @Override
     public boolean equals(Object o) {

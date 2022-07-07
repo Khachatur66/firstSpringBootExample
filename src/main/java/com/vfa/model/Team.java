@@ -34,11 +34,8 @@ public class Team {
     @Column(nullable = false)
     private LocalDate created;
 
-    @OneToMany
-    @JoinTable(name = "team_players",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "players_id"))
-    private List<Player> players;
+    /*@OneToMany
+    private List<Player> players;*/
 
     public Team() {
         this.status = true;
@@ -99,40 +96,5 @@ public class Team {
 
     public void setCreated(LocalDate created) {
         this.created = created;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Team team = (Team) o;
-        return id == team.id && points == team.points && playersAmount == team.playersAmount && status == team.status && Objects.equals(name, team.name) && Objects.equals(teamOrigin, team.teamOrigin) && Objects.equals(created, team.created) && Objects.equals(players, team.players);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, points, playersAmount, status, teamOrigin, created, players);
-    }
-
-    @Override
-    public String toString() {
-        return "Team{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", points=" + points +
-                ", playersAmount=" + playersAmount +
-                ", status=" + status +
-                ", teamOrigin='" + teamOrigin + '\'' +
-                ", created=" + created +
-                ", players=" + players +
-                '}';
     }
 }

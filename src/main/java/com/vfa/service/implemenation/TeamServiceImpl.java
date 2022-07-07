@@ -1,6 +1,7 @@
 package com.vfa.service.implemenation;
 
 import com.vfa.dto.response.TeamResponse;
+import com.vfa.exception.BadRequestException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Team;
 import com.vfa.repository.TeamRepository;
@@ -10,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,10 +38,21 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Object getTeamById(int id) {
-        String select = "SELECT * FROM team WHERE id = ?1";
+    public Object getTeamById(int id) throws BadRequestException {
+        String select = "SELECT";
+
+        if (id == 1) {
+            select = select + " name";
+        } else if (id == 2) {
+            select = select + " team_origin";
+        } else {
+            throw new BadRequestException("Cannot get field with current id");
+        }
+
+        select = select + " FROM team WHERE id = ?1";
 
         Query query = entityManager.createNativeQuery(select);
+        query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
         query.setParameter(1, id);
 
         return query.getSingleResult();
@@ -67,6 +77,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<Team> getAllTeams() {
+        String selectAll = "SELECT t FROM Team t";
+
+        TypedQuery<Team> query = entityManager.createQuery(selectAll, Team.class);
+
+        return  query.getResultList();
+    }
+
+    @Override
     public int countPlayers(int id) {
         return teamRepository.countPlayers(id);
     }
@@ -78,10 +97,31 @@ public class TeamServiceImpl implements TeamService {
                 orElseThrow(() -> new NotFoundException("Could not find player with current id " + id));
     }*/
 
-    @Transactional
     @Override
     public void save(Team team) {
+        EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("vfa");
+        EntityManager entityManager = managerFactory.createEntityManager();
+        EntityTransaction tx = entityManager.getTransaction();
+
+        tx.begin();
         teamRepository.save(team);
+        tx.commit();
+    }
+
+    @Transactional
+    @Override
+    public void saveTeam(Team team) {
+        String save = "INSERT INTO team(name, points, playersAmount, teamOrigin) VALUES (?, ?, ?, ?)";
+
+        Query query = entityManager.createNativeQuery(save);
+
+        query.setParameter(1, team.getName());
+        query.setParameter(2, team.getPoints());
+        query.setParameter(3, team.getPlayersAmount());
+        query.setParameter(4, team.getTeamOrigin());
+
+        query.executeUpdate();
+
     }
 
     @Transactional
@@ -98,13 +138,24 @@ public class TeamServiceImpl implements TeamService {
         Query query = entityManager.createQuery(update);
         query.setParameter(1, name);
         query.setParameter(2, id);
-        query.executeUpdate();
+        query.getSingleResult();
     }
 
     @Transactional
     @Override
     public void delete(int id) {
         teamRepository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public void deleteTeam(int id) {
+        String delete = "DELETE FROM team WHERE id = ?1";
+
+        Query query = entityManager.createNativeQuery(delete);
+
+        query.setParameter(1, id);
+        query.executeUpdate();
     }
 
     @Override

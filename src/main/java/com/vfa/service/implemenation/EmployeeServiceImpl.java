@@ -13,6 +13,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,6 +26,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     private final EmailHelper emailHelper;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmailHelper emailHelper) {
         this.employeeRepository = employeeRepository;
