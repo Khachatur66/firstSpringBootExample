@@ -15,16 +15,14 @@ import java.util.List;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT t.players.size FROM Team t WHERE t.id = ?1")
     int countPlayers(int id);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT t FROM Team t WHERE t.teamOrigin = ?1")
     Page<Team> getByTeamId(String teamOrigin, Pageable pageable);
 
     @Query("SELECT new com.vfa.dto.response.TeamResponse(t.name, t.players.size) FROM Team t")
     List<TeamResponse> getPlayersCountById();
-
-
 
 }

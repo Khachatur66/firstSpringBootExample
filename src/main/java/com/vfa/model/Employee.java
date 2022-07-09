@@ -47,6 +47,9 @@ public class Employee {
             inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List<Address> addresses;
 
+    @OneToOne
+    private Authority authority;
+
     public Employee() {
         status = UserStatus.UNVERIFIED;
         created = LocalDate.now();
@@ -130,18 +133,40 @@ public class Employee {
         this.addresses = addresses;
     }
 
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(email, employee.email) && Objects.equals(password, employee.password) && status == employee.status && Objects.equals(created, employee.created) && Objects.equals(verificationCode, employee.verificationCode) && Objects.equals(addresses, employee.addresses);
+        return id == employee.id && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(email, employee.email) && Objects.equals(password, employee.password) && status == employee.status && Objects.equals(created, employee.created) && Objects.equals(verificationCode, employee.verificationCode) && Objects.equals(addresses, employee.addresses) && Objects.equals(authority, employee.authority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, password, status, created, verificationCode, addresses);
+        return Objects.hash(id, firstName, lastName, email, password, status, created, verificationCode, addresses, authority);
     }
 
-
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", created=" + created +
+                ", verificationCode='" + verificationCode + '\'' +
+                ", addresses=" + addresses +
+                ", authority=" + authority +
+                '}';
+    }
 }

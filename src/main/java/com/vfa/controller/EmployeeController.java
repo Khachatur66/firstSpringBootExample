@@ -56,9 +56,9 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/password")
-    public ResponseEntity<Void> updatePasswordDTO(@Valid @RequestBody EmployeePasswordRequest passwordRequestDTO) throws NotFoundException {
-        employeeService.updatePassword(passwordRequestDTO);
+    @PatchMapping("/password")
+    public ResponseEntity<Void> updatePassword(@Valid @RequestBody EmployeePasswordRequest passwordRequest) throws NotFoundException {
+        employeeService.updatePassword(passwordRequest);
         return ResponseEntity.ok().build();
     }
 

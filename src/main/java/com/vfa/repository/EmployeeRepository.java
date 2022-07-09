@@ -34,4 +34,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Modifying
     @Query("UPDATE Employee SET password = ?1 WHERE id = ?2")
     void changePassword(String password, int employeeId);
+
+    @Query("SELECT e FROM Employee e WHERE e.email = ?1")
+    Optional<Employee> getByEmail(String email);
 }

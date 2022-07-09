@@ -10,6 +10,7 @@ import com.vfa.model.Employee;
 import com.vfa.repository.EmployeeRepository;
 import com.vfa.service.interfaces.EmployeeService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -27,12 +29,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmailHelper emailHelper;
 
+    private final PasswordEncoder passwordEncoder;
+
+
     @PersistenceContext
     private EntityManager entityManager;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmailHelper emailHelper) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmailHelper emailHelper, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
         this.emailHelper = emailHelper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -65,6 +71,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getAll() {
         return employeeRepository.findAll();
+    }
+
+    @Override
+    public Optional<Employee> getByEmail(String email) {
+        return employeeRepository.getByEmail(email);
     }
 
     @Transactional
@@ -129,8 +140,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void updatePassword(EmployeePasswordRequest passwordRequestDTO) {
-        employeeRepository.changePassword(passwordRequestDTO.getPassword(), passwordRequestDTO.getId());
+    public void updatePassword(EmployeePasswordRequest passwordRequest) {
+        String password = passwordEncoder.encode(passwordRequest.getPassword());
+        employeeRepository.changePassword(password, passwordRequest.getId());
     }
 
     @Transactional

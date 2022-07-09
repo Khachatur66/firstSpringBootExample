@@ -6,15 +6,18 @@ import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface EmployeeService extends AbstractService<Employee>{
 
     void updateEmployee(EmployeeRequest requestDTO) throws NotFoundException;
 
-    void updatePassword(EmployeePasswordRequest passwordRequestDTO) throws NotFoundException;
+    void updatePassword(EmployeePasswordRequest passwordRequest) throws NotFoundException;
 
 //    EmployeePasswordRequestDTO getDtoById(int id) throws NotFoundException;
 
     Map<String, Object> getEmployeeById(int id);
+
+    Optional<Employee> getByEmail(String email);
 
 }

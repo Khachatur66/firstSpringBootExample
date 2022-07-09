@@ -37,6 +37,7 @@ public class TeamServiceImpl implements TeamService {
         return teamRepository.getPlayersCountById();
     }
 
+    @Transactional
     @Override
     public Object getTeamById(int id) throws BadRequestException {
         String select = "SELECT";
@@ -82,11 +83,12 @@ public class TeamServiceImpl implements TeamService {
 
         TypedQuery<Team> query = entityManager.createQuery(selectAll, Team.class);
 
-        return  query.getResultList();
+        return query.getResultList();
     }
 
+    @Transactional
     @Override
-    public int countPlayers(int id) {
+    public int countPlayers(int id) throws InterruptedException {
         return teamRepository.countPlayers(id);
     }
 

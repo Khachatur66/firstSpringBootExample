@@ -11,7 +11,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,12 +35,12 @@ public class TeamController {
 
     @GetMapping("/player/{teamOrigin}")
     public ResponseEntity<?> getPaginationByTeamId(@PathVariable(value = "teamOrigin") String teamOrigin,
-                                                   @PageableDefault Pageable pageable) {
+                                                   @PageableDefault Pageable pageable) throws InterruptedException {
         return ResponseEntity.ok(teamService.getByTeamId(teamOrigin, pageable));
     }
 
     @GetMapping("/team/{id}")
-    public ResponseEntity<Integer> getByPlayers(@PathVariable(value = "id") int id) {
+    public ResponseEntity<Integer> getByPlayers(@PathVariable(value = "id") int id) throws InterruptedException {
         return ResponseEntity.ok(teamService.countPlayers(id));
     }
 
@@ -49,7 +48,6 @@ public class TeamController {
     public ResponseEntity<List<Team>> getByPlayers(@PathVariable(value = "id") int id) throws NotFoundException {
         return ResponseEntity.ok(teamService.getPlayersNameById(id));
     }*/
-
 
     @GetMapping
     public ResponseEntity<List<Team>> getAll() {
@@ -78,7 +76,7 @@ public class TeamController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Void> saveTeam( @RequestBody Team team) {
+    public ResponseEntity<Void> saveTeam(@RequestBody Team team) {
         teamService.saveTeam(team);
         return ResponseEntity.ok().build();
     }
