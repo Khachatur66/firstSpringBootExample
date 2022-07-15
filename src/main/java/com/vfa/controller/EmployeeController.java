@@ -67,5 +67,4 @@ public class EmployeeController {
         employeeService.delete(id);
         return ResponseEntity.ok().build();
     }
-
 }
