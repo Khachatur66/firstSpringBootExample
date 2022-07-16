@@ -8,9 +8,11 @@ import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 import com.vfa.service.interfaces.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -32,12 +34,13 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'EMPLOYEE')")
     @GetMapping
-    public ResponseEntity<Void> getAll() {
-        employeeService.getAll();
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<Employee>> getAll() {
+        return ResponseEntity.ok(employeeService.getAll());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody Employee employee) throws DuplicateDataException, BadRequestException {
         employeeService.save(employee);

@@ -100,7 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode);
 
-        String password = this.savePasswordForNewUser();
+        String password = passwordEncoder.encode(employee.getPassword());
         employee.setPassword(password);
 
         employeeRepository.save(employee);

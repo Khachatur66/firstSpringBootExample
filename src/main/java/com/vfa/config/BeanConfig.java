@@ -21,7 +21,7 @@ public class BeanConfig {
     }*/
 
     @Bean("encoder")
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
