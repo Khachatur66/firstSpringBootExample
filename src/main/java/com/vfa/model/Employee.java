@@ -2,11 +2,9 @@ package com.vfa.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vfa.enums.UserStatus;
-import org.hibernate.metamodel.model.convert.internal.OrdinalEnumValueConverter;
+import com.vfa.enums.EmployeeStatus;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +29,7 @@ public class Employee {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private EmployeeStatus status;
 
     @JsonIgnore
     @Column(nullable = false)
@@ -51,7 +49,6 @@ public class Employee {
     private Authority authority;
 
     public Employee() {
-        status = UserStatus.UNVERIFIED;
         created = LocalDate.now();
     }
 
@@ -101,11 +98,11 @@ public class Employee {
         this.password = password;
     }
 
-    public UserStatus getStatus() {
+    public EmployeeStatus getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(EmployeeStatus status) {
         this.status = status;
     }
 

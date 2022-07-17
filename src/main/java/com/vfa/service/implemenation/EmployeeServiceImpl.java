@@ -2,6 +2,8 @@ package com.vfa.service.implemenation;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
+import com.vfa.dto.response.EmployeeResponse;
+import com.vfa.enums.EmployeeStatus;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -143,6 +145,36 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void updatePassword(EmployeePasswordRequest passwordRequest) {
         String password = passwordEncoder.encode(passwordRequest.getPassword());
         employeeRepository.changePassword(password, passwordRequest.getId());
+    }
+
+    @Transactional
+    @Override
+    public void action(int id, boolean status) {
+
+        Employee employee = new Employee();
+
+        if (status == true) {
+           employee.setStatus(EmployeeStatus.ACTIVE);
+        }else {
+            employee.setStatus(EmployeeStatus.DISABLE);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException {
+
+        Employee employee = this.getById(employeeResponse.getId());
+
+        if (employeeRepository.findByEmailAndVerificationCode(employeeResponse.getEmail(), employeeResponse.getVerificationCode()) != null) {
+            employee.setStatus(EmployeeStatus.ACTIVE);
+            employee.setVerificationCode(null);
+        }else {
+            throw new NotFoundException("Could not find Employee with current Email: "
+                    + employeeResponse.getEmail()
+                    + " and verificationCode: "
+                    + employeeResponse.getVerificationCode());
+        }
     }
 
     @Transactional

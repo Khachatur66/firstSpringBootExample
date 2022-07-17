@@ -37,4 +37,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("SELECT e FROM Employee e WHERE e.email = ?1")
     Optional<Employee> getByEmail(String email);
+
+    Employee findByEmailAndVerificationCode(String email, String verificationCode);
 }

@@ -12,7 +12,7 @@ import java.util.Locale;
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
-//        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
 
        /* String name = "Service location address";
 
@@ -23,8 +23,8 @@ public class Application extends SpringBootServletInitializer {
         for (int i = 1; i < s.length; i++) {
             builder.append(StringUtils.capitalize(s[i]));
         }
-        System.out.println(builder);*/
+        System.out.println(builder);
 
-        System.out.println(System.currentTimeMillis());
+        System.out.println(System.currentTimeMillis());*/
     }
 }

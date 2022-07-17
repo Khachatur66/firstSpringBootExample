@@ -2,6 +2,7 @@ package com.vfa.controller;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
+import com.vfa.dto.response.EmployeeResponse;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -64,6 +65,19 @@ public class EmployeeController {
         employeeService.updatePassword(passwordRequest);
         return ResponseEntity.ok().build();
     }
+
+     @PatchMapping("/{id}/status/{status}")
+     private ResponseEntity<?> action(@PathVariable("id") int id, @PathVariable("status") boolean status) {
+        employeeService.action(id, status);
+        return ResponseEntity.ok().build();
+     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+     @PatchMapping
+     public ResponseEntity<Void> updateEmployeeByEmailAndVerificationCode(@Valid @RequestBody EmployeeResponse employeeResponse) throws NotFoundException {
+        employeeService.updateEmployeeByEmailAndVerificationCode(employeeResponse);
+        return ResponseEntity.ok().build();
+     }
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam int id) {

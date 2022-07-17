@@ -1,6 +1,6 @@
 package com.vfa.enums;
 
-public enum UserStatus {
+public enum EmployeeStatus {
     ACTIVE,
     UNVERIFIED,
     DISABLE
