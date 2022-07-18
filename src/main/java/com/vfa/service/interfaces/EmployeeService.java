@@ -3,6 +3,8 @@ package com.vfa.service.interfaces;
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
 import com.vfa.dto.response.EmployeeResponse;
+import com.vfa.exception.AccessDeniedException;
+import com.vfa.exception.BadRequestException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 
@@ -21,8 +23,10 @@ public interface EmployeeService extends AbstractService<Employee> {
 
     Optional<Employee> getByEmail(String email);
 
-    void action(int id, boolean status);
+    void action(int id, boolean status) throws NotFoundException;
 
-    void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException;
+    void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException, AccessDeniedException;
+
+    void refreshVerificationCode(int id) throws NotFoundException, BadRequestException;
 
 }

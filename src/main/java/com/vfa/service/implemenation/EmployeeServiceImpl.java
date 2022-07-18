@@ -4,6 +4,7 @@ import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
 import com.vfa.dto.response.EmployeeResponse;
 import com.vfa.enums.EmployeeStatus;
+import com.vfa.exception.AccessDeniedException;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
 import com.vfa.exception.NotFoundException;
@@ -32,7 +33,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmailHelper emailHelper;
 
     private final PasswordEncoder passwordEncoder;
-
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -99,6 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         String verificationCode = this.saveVerificationCode();
         employee.setVerificationCode(verificationCode);
+        employee.setTemporaryVerificationCode(System.currentTimeMillis());
 
         emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode);
 
@@ -149,31 +150,53 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void action(int id, boolean status) {
+    public void action(int id, boolean status) throws NotFoundException {
 
-        Employee employee = new Employee();
+        Employee employee = this.getById(id);
 
-        if (status == true) {
-           employee.setStatus(EmployeeStatus.ACTIVE);
-        }else {
+        if (status) {
+            employee.setStatus(EmployeeStatus.ACTIVE);
+        } else {
             employee.setStatus(EmployeeStatus.DISABLE);
         }
     }
 
     @Transactional
     @Override
-    public void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException {
+    public void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException, AccessDeniedException {
 
         Employee employee = this.getById(employeeResponse.getId());
 
         if (employeeRepository.findByEmailAndVerificationCode(employeeResponse.getEmail(), employeeResponse.getVerificationCode()) != null) {
-            employee.setStatus(EmployeeStatus.ACTIVE);
-            employee.setVerificationCode(null);
-        }else {
+            long currentTime = System.currentTimeMillis();
+
+            if (employee.getTemporaryVerificationCode() + currentTime > currentTime) {
+                employee.setStatus(EmployeeStatus.ACTIVE);
+                employee.setVerificationCode(null);
+                employee.setTemporaryVerificationCode(0);
+            } else {
+                throw new AccessDeniedException("the Temporary Verification Code has been already expired");
+            }
+
+        } else {
             throw new NotFoundException("Could not find Employee with current Email: "
                     + employeeResponse.getEmail()
                     + " and verificationCode: "
                     + employeeResponse.getVerificationCode());
+        }
+    }
+
+    @Transactional
+    @Override
+    public void refreshVerificationCode(int id) throws NotFoundException, BadRequestException {
+        Employee employee = this.getById(id);
+
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - employee.getTemporaryVerificationCode() == currentTime) {
+            employee.setTemporaryVerificationCode(System.currentTimeMillis());
+        } else {
+            throw new BadRequestException("The Temporary verification code has not expired yet");
         }
     }
 
