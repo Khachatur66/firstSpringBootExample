@@ -2,6 +2,7 @@ package com.vfa.service.implemenation;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
+import com.vfa.dto.response.EmployeeMailResponse;
 import com.vfa.dto.response.EmployeeResponse;
 import com.vfa.enums.EmployeeStatus;
 import com.vfa.exception.AccessDeniedException;
@@ -28,6 +29,8 @@ import java.util.Optional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+    private final long DIFF = 24 * 60 * 60 * 1000;
+
     private final EmployeeRepository employeeRepository;
 
     private final EmailHelper emailHelper;
@@ -50,10 +53,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() -> new NotFoundException("could not find employee with current id: " + id));
     }
 
-    /*@Override
-    public EmployeePasswordRequestDTO getDtoById(int id) throws NotFoundException {
+    @Override
+    public EmployeePasswordRequest getDtoById(int id) throws NotFoundException {
         return employeeRepository.getDtoById(id).orElseThrow(() -> new NotFoundException("could not find employeePasswordRequestDto with current id: " + id));
-    }*/
+    }
 
     @Override
     public Map<String, Object> getEmployeeById(int id) {
@@ -97,9 +100,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BadRequestException("the Number of " + firstName + " should not exceed 3");
         }
 
-        String verificationCode = this.saveVerificationCode();
+        String verificationCode = this.createVerificationCode();
         employee.setVerificationCode(verificationCode);
-        employee.setTemporaryVerificationCode(System.currentTimeMillis());
+        employee.setTemporaryVerificationCode(System.currentTimeMillis() + DIFF);
 
         emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode);
 
@@ -109,7 +112,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.save(employee);
     }
 
-    private String saveVerificationCode() {
+    private String createVerificationCode() {
         String verificationCode;
 
         do {
@@ -117,13 +120,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         } while (employeeRepository.findByVerificationCode(verificationCode) != null);
 
         return verificationCode;
-    }
-
-    private String savePasswordForNewUser() {
-        String password;
-
-        password = RandomStringUtils.randomAlphanumeric(9);
-        return password;
     }
 
     @Transactional
@@ -165,12 +161,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException, AccessDeniedException {
 
-        Employee employee = this.getById(employeeResponse.getId());
+        Employee employee = employeeRepository.findByEmail(employeeResponse.getEmail());
 
         if (employeeRepository.findByEmailAndVerificationCode(employeeResponse.getEmail(), employeeResponse.getVerificationCode()) != null) {
+
+
             long currentTime = System.currentTimeMillis();
 
-            if (employee.getTemporaryVerificationCode() + currentTime > currentTime) {
+            if (currentTime < employee.getTemporaryVerificationCode()) {
                 employee.setStatus(EmployeeStatus.ACTIVE);
                 employee.setVerificationCode(null);
                 employee.setTemporaryVerificationCode(0);
@@ -179,25 +177,17 @@ public class EmployeeServiceImpl implements EmployeeService {
             }
 
         } else {
-            throw new NotFoundException("Could not find Employee with current Email: "
-                    + employeeResponse.getEmail()
-                    + " and verificationCode: "
-                    + employeeResponse.getVerificationCode());
+            throw new NotFoundException(String.format("Could not find Employee with current Email: %s", employeeResponse.getEmail()));
         }
     }
 
     @Transactional
     @Override
-    public void refreshVerificationCode(int id) throws NotFoundException, BadRequestException {
-        Employee employee = this.getById(id);
+    public void refreshVerificationCode(EmployeeMailResponse employeeMailResponse) {
+        Employee employee = employeeRepository.findByEmail(employeeMailResponse.getEmail());
 
-        long currentTime = System.currentTimeMillis();
-
-        if (currentTime - employee.getTemporaryVerificationCode() == currentTime) {
-            employee.setTemporaryVerificationCode(System.currentTimeMillis());
-        } else {
-            throw new BadRequestException("The Temporary verification code has not expired yet");
-        }
+        employee.setVerificationCode(this.createVerificationCode());
+        employee.setTemporaryVerificationCode(System.currentTimeMillis() + DIFF);
     }
 
     @Transactional

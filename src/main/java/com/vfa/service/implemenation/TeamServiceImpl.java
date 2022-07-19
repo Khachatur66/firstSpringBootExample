@@ -88,7 +88,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Transactional
     @Override
-    public int countPlayers(int id) throws InterruptedException {
+    public int countPlayers(int id)  {
         return teamRepository.countPlayers(id);
     }
 

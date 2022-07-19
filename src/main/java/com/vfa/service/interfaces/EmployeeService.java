@@ -2,9 +2,9 @@ package com.vfa.service.interfaces;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
+import com.vfa.dto.response.EmployeeMailResponse;
 import com.vfa.dto.response.EmployeeResponse;
 import com.vfa.exception.AccessDeniedException;
-import com.vfa.exception.BadRequestException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
 
@@ -17,7 +17,7 @@ public interface EmployeeService extends AbstractService<Employee> {
 
     void updatePassword(EmployeePasswordRequest passwordRequest) throws NotFoundException;
 
-//    EmployeePasswordRequestDTO getDtoById(int id) throws NotFoundException;
+    EmployeePasswordRequest getDtoById(int id) throws NotFoundException;
 
     Map<String, Object> getEmployeeById(int id);
 
@@ -27,6 +27,6 @@ public interface EmployeeService extends AbstractService<Employee> {
 
     void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException, AccessDeniedException;
 
-    void refreshVerificationCode(int id) throws NotFoundException, BadRequestException;
+    void refreshVerificationCode(EmployeeMailResponse employeeMailResponse);
 
 }

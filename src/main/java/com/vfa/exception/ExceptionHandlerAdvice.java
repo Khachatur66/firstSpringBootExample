@@ -18,13 +18,23 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(DuplicateDataException.class)
-    public ResponseEntity<?> DuplicateDataException(DuplicateDataException e) {
+    public ResponseEntity<?> duplicateDataException(DuplicateDataException e) {
         return new ResponseEntity<>(createMessage(e, HttpStatus.CONFLICT), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<?> BadRequestException(BadRequestException e) {
+    public ResponseEntity<?> badRequestException(BadRequestException e) {
         return new ResponseEntity<>(createMessage(e, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> accessDeniedException(AccessDeniedException e) {
+        return new ResponseEntity<>(createMessage(e, HttpStatus.FORBIDDEN), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(JwtAuthenticationException.class)
+    public ResponseEntity<?> authenticationException(JwtAuthenticationException e) {
+        return new ResponseEntity<>(createMessage(e, HttpStatus.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
     }
 
 

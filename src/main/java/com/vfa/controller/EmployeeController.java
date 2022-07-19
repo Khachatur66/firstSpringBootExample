@@ -2,6 +2,7 @@ package com.vfa.controller;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
+import com.vfa.dto.response.EmployeeMailResponse;
 import com.vfa.dto.response.EmployeeResponse;
 import com.vfa.exception.AccessDeniedException;
 import com.vfa.exception.BadRequestException;
@@ -80,9 +81,9 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> refreshVerificationCode(@PathVariable("id") int id) throws NotFoundException, BadRequestException {
-        employeeService.refreshVerificationCode(id);
+    @PatchMapping("/refreshing")
+    public ResponseEntity<Void> refreshVerificationCode(@RequestBody EmployeeMailResponse employeeMailResponse) {
+        employeeService.refreshVerificationCode(employeeMailResponse);
         return ResponseEntity.ok().build();
     }
 
