@@ -2,8 +2,9 @@ package com.vfa.controller;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
-import com.vfa.dto.response.EmployeeMailResponse;
-import com.vfa.dto.response.EmployeeResponse;
+import com.vfa.dto.response.EmployeeMailRequest;
+import com.vfa.dto.request.EmployeePasswordChangingRequest;
+import com.vfa.dto.request.EmployeeResponse;
 import com.vfa.exception.AccessDeniedException;
 import com.vfa.exception.BadRequestException;
 import com.vfa.exception.DuplicateDataException;
@@ -82,8 +83,20 @@ public class EmployeeController {
     }
 
     @PatchMapping("/refreshing")
-    public ResponseEntity<Void> refreshVerificationCode(@RequestBody EmployeeMailResponse employeeMailResponse) {
-        employeeService.refreshVerificationCode(employeeMailResponse);
+    public ResponseEntity<Void> refreshVerificationCode(@RequestBody EmployeeMailRequest employeeMailRequest) {
+        employeeService.refreshVerificationCode(employeeMailRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/passcode")
+    public ResponseEntity<Void> passcodeGenerator(@RequestBody EmployeeMailRequest employeeMailRequest) throws NotFoundException {
+        employeeService.passcodeGenerator(employeeMailRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/ChangingPassword")
+    public ResponseEntity<Void> passwordChanger(@RequestBody EmployeePasswordChangingRequest passwordChangingResponse) throws NotFoundException {
+        employeeService.forgetPassword(passwordChangingResponse);
         return ResponseEntity.ok().build();
     }
 

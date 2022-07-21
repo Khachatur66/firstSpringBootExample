@@ -51,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             email = request.getEmail();
             Employee employee = employeeService
                     .getByEmail(email)
-                    .orElseThrow(() -> new JwtAuthenticationException("Incorrect username or password", HttpStatus.UNAUTHORIZED));
+                    .orElseThrow(() -> new JwtAuthenticationException("Incorrect email or password", HttpStatus.UNAUTHORIZED));
 
             this.checkUserCredentials(employee, request.getPassword());
 

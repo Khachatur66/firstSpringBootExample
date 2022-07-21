@@ -2,8 +2,9 @@ package com.vfa.service.implemenation;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
-import com.vfa.dto.response.EmployeeMailResponse;
-import com.vfa.dto.response.EmployeeResponse;
+import com.vfa.dto.response.EmployeeMailRequest;
+import com.vfa.dto.request.EmployeePasswordChangingRequest;
+import com.vfa.dto.request.EmployeeResponse;
 import com.vfa.enums.EmployeeStatus;
 import com.vfa.exception.AccessDeniedException;
 import com.vfa.exception.BadRequestException;
@@ -18,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,9 +35,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmailHelper emailHelper;
 
     private final PasswordEncoder passwordEncoder;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmailHelper emailHelper, PasswordEncoder passwordEncoder) {
         this.employeeRepository = employeeRepository;
@@ -104,7 +100,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setVerificationCode(verificationCode);
         employee.setTemporaryVerificationCode(System.currentTimeMillis() + DIFF);
 
-        emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode);
+        emailHelper.sendSimpleMessage(employee.getEmail(), employee.getFirstName(), verificationCode, true);
 
         String password = passwordEncoder.encode(employee.getPassword());
         employee.setPassword(password);
@@ -183,11 +179,39 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     @Override
-    public void refreshVerificationCode(EmployeeMailResponse employeeMailResponse) {
-        Employee employee = employeeRepository.findByEmail(employeeMailResponse.getEmail());
+    public void refreshVerificationCode(EmployeeMailRequest employeeMailRequest) {
+        Employee employee = employeeRepository.findByEmail(employeeMailRequest.getEmail());
 
         employee.setVerificationCode(this.createVerificationCode());
         employee.setTemporaryVerificationCode(System.currentTimeMillis() + DIFF);
+    }
+
+    @Transactional
+    @Override
+    public void passcodeGenerator(EmployeeMailRequest employeeMailRequest) throws NotFoundException {
+        Employee employee = employeeRepository.findByEmail(employeeMailRequest.getEmail());
+
+        if (employeeRepository.findByEmail(employeeMailRequest.getEmail()) != null) {
+            employee.setPasscode(RandomStringUtils.randomAlphanumeric(8));
+            employee.setPasscodeValidityTime(System.currentTimeMillis() + DIFF);
+        } else {
+            throw new NotFoundException("Could not find Employee with current Email");
+        }
+
+        emailHelper.sendSimpleMessage(employeeMailRequest.getEmail(), employee.getFirstName(), employee.getPasscode(), true);
+    }
+
+    @Transactional
+    @Override
+    public void forgetPassword(EmployeePasswordChangingRequest passwordChangingResponse) throws NotFoundException {
+        Employee employee = employeeRepository.findByEmail(passwordChangingResponse.getEmail());
+
+        if (passwordChangingResponse.getPasscode().equals(employee.getPasscode())) {
+            employee.setPassword(passwordEncoder.encode(passwordChangingResponse.getPassword()));
+        } else {
+            throw new NotFoundException("Could not find Employee, email or passcode is wrong");
+        }
+
     }
 
     @Transactional
