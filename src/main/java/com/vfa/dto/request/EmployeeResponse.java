@@ -1,4 +1,4 @@
-package com.vfa.dto.response;
+package com.vfa.dto.request;
 
 import lombok.Data;
 

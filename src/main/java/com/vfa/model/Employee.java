@@ -41,6 +41,11 @@ public class Employee {
     @Column(nullable = false)
     private long temporaryVerificationCode;
 
+
+    private String passcode;
+
+    private long passcodeValidityTime;
+
     @Column(nullable = false)
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "employee_address",
@@ -150,17 +155,33 @@ public class Employee {
         this.temporaryVerificationCode = temporaryVerificationCode;
     }
 
+    public String getPasscode() {
+        return passcode;
+    }
+
+    public void setPasscode(String passcode) {
+        this.passcode = passcode;
+    }
+
+    public long getPasscodeValidityTime() {
+        return passcodeValidityTime;
+    }
+
+    public void setPasscodeValidityTime(long passcodeValidityTime) {
+        this.passcodeValidityTime = passcodeValidityTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && temporaryVerificationCode == employee.temporaryVerificationCode && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(email, employee.email) && Objects.equals(password, employee.password) && status == employee.status && Objects.equals(created, employee.created) && Objects.equals(verificationCode, employee.verificationCode) && Objects.equals(addresses, employee.addresses) && Objects.equals(authority, employee.authority);
+        return id == employee.id && temporaryVerificationCode == employee.temporaryVerificationCode && passcodeValidityTime == employee.passcodeValidityTime && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(email, employee.email) && Objects.equals(password, employee.password) && status == employee.status && Objects.equals(created, employee.created) && Objects.equals(verificationCode, employee.verificationCode) && Objects.equals(passcode, employee.passcode) && Objects.equals(addresses, employee.addresses) && Objects.equals(authority, employee.authority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, password, status, created, verificationCode, temporaryVerificationCode, addresses, authority);
+        return Objects.hash(id, firstName, lastName, email, password, status, created, verificationCode, temporaryVerificationCode, passcode, passcodeValidityTime, addresses, authority);
     }
 
     @Override
@@ -175,8 +196,11 @@ public class Employee {
                 ", created=" + created +
                 ", verificationCode='" + verificationCode + '\'' +
                 ", temporaryVerificationCode=" + temporaryVerificationCode +
+                ", passcode='" + passcode + '\'' +
+                ", passcodeValidityTime=" + passcodeValidityTime +
                 ", addresses=" + addresses +
                 ", authority=" + authority +
                 '}';
     }
 }
+

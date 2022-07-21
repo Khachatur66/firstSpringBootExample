@@ -2,8 +2,9 @@ package com.vfa.service.interfaces;
 
 import com.vfa.dto.request.EmployeePasswordRequest;
 import com.vfa.dto.request.EmployeeRequest;
-import com.vfa.dto.response.EmployeeMailResponse;
-import com.vfa.dto.response.EmployeeResponse;
+import com.vfa.dto.response.EmployeeMailRequest;
+import com.vfa.dto.request.EmployeePasswordChangingRequest;
+import com.vfa.dto.request.EmployeeResponse;
 import com.vfa.exception.AccessDeniedException;
 import com.vfa.exception.NotFoundException;
 import com.vfa.model.Employee;
@@ -27,6 +28,10 @@ public interface EmployeeService extends AbstractService<Employee> {
 
     void updateEmployeeByEmailAndVerificationCode(EmployeeResponse employeeResponse) throws NotFoundException, AccessDeniedException;
 
-    void refreshVerificationCode(EmployeeMailResponse employeeMailResponse);
+    void refreshVerificationCode(EmployeeMailRequest employeeMailRequest);
+
+    void passcodeGenerator(EmployeeMailRequest employeeMailRequest) throws NotFoundException;
+
+    void forgetPassword(EmployeePasswordChangingRequest passwordChangingResponse) throws NotFoundException;
 
 }
