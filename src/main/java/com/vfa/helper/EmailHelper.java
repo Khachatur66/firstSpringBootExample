@@ -12,19 +12,30 @@ import javax.mail.internet.MimeMessage;
 @Component
 public class EmailHelper {
 
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String username;
 
-    public EmailHelper(JavaMailSender sender) {
+    public EmailHelper(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
 
     @Async
-    public void sendSimpleMessage(String email, String firstname, String verificationCode) {
+    public void sendSimpleMessage(String email, String firstname, String code, boolean isVerified) {
         String subject = "Account Confirmation";
+
+        String text1;
+        String text2;
+
+        if (isVerified) {
+            text1 = " verification ";
+            text2 = " verify your account and";
+        } else {
+            text1 = " pass ";
+            text2 = "";
+        }
 
         String emailContent = "\r\n" +
                 "<html>\n" +
@@ -46,8 +57,8 @@ public class EmailHelper {
                 "        <div style='text-align:center;'>\n" +
                 "           <IMG src='https://icon-library.com/images/verified-icon-png/verified-icon-png-1.jpg' height='155' width='150'>\n" +
                 "        </div>\n" +
-                "        <h3>Hello " + firstname + "!</h3><h4>Your verification code is: </h4><h2>" + verificationCode + "</h2>\n" +
-                "        <h4>Please click on the button to verify your account and change your password.</h4>\n" +
+                "        <h3>Hello " + firstname + "!</h3><h4>Your " + text1 + " code is: </h4><h2>" + code + "</h2>\n" +
+                "        <h4>Please click on the button to " + text2 + " change your password.</h4>\n" +
                 "       <a href='www.google.com'>VERIFY ACCOUNT</a>\n" +
                 "    </div>\n" +
                 "  </body>\n" +
@@ -59,8 +70,7 @@ public class EmailHelper {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
 
             helper.setFrom(this.username);
-            helper.setTo(email)
-            ;
+            helper.setTo(email);
             helper.setSubject(subject);
             helper.setText(emailContent, true);
             mailSender.send(mail);
